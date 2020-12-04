@@ -1,6 +1,7 @@
-﻿using NerdStore.Core.DomainObjects;
+﻿using System.Collections.Generic;
+using NerdStore.Core.DomainObjects;
 
-namespace NerdStore.Catalogo.Domain
+namespace NerdStore.Catalogo.Domain.Models
 {
     public class Categoria : Entity
     {
@@ -8,6 +9,8 @@ namespace NerdStore.Catalogo.Domain
 
         public string Nome { get; private set; }
         public int Codigo { get; private set; }
+
+        public virtual ICollection<Produto> Produtos { get; set; }
 
         #endregion
 

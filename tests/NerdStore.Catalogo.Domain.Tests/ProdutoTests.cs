@@ -1,6 +1,7 @@
 using Xunit;
 using System;
 using NerdStore.Core.DomainObjects;
+using NerdStore.Catalogo.Domain.Models;
 
 namespace NerdStore.Catalogo.Domain.Tests
 {
