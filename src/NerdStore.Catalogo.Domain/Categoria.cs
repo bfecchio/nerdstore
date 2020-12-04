@@ -17,6 +17,8 @@ namespace NerdStore.Catalogo.Domain
         {
             Nome = nome;
             Codigo = codigo;
+
+            Validar();
         }
 
         #endregion
@@ -26,6 +28,16 @@ namespace NerdStore.Catalogo.Domain
         public override string ToString()
         {
             return $"{Nome} - {Codigo}";
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public void Validar()
+        {
+            Validacoes.ValidarSeVazio(Nome, "O campo Nome da Categoria não pode estar vazio.");
+            Validacoes.ValidarSeIgual(Codigo, 0, "O campo Código da Categoria não pode ser zero.");
         }
 
         #endregion

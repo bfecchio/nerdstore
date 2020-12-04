@@ -31,6 +31,8 @@ namespace NerdStore.Catalogo.Domain
             Valor = valor;
             DataCadastro = dataCadastro;
             Imagem = imagem;
+
+            Validar();
         }
 
         #endregion
@@ -49,12 +51,15 @@ namespace NerdStore.Catalogo.Domain
 
         public void AlterarDescricao(string descricao)
         {
+            Validacoes.ValidarSeVazio(Descricao, $"O campo Descricao do Produto não pode ser vazio.");
             Descricao = descricao;
         }
 
         public void DebitarEstoque(int quantidade)
         {
             if (quantidade < 0) quantidade *= -1;
+            if (!PossuiEstoque(quantidade)) throw new DomainException("Estoque insuficiente.");
+
             QuantidadeEstoque -= quantidade;
         }
 
@@ -71,7 +76,13 @@ namespace NerdStore.Catalogo.Domain
         }
 
         public void Validar()
-        { }
+        {
+            Validacoes.ValidarSeVazio(Nome, $"O campo Nome do Produto não pode ser vazio.");
+            Validacoes.ValidarSeVazio(Descricao, $"O campo Descricao do Produto não pode ser vazio.");
+            Validacoes.ValidarSeDiferente(CategoriaId, Guid.Empty, "O campo CategoriaId do Produto não pode estar vazio.");
+            Validacoes.ValidarSeMenorIgualMinimo(Valor, 0, "O campo Valor do Produto não pode ser menor ou igual a zero.");
+            Validacoes.ValidarSeVazio(Imagem, "O campo Imagem do Produto não pode estar vazio.");
+        }
 
         #endregion
     }
