@@ -1,5 +1,7 @@
 ﻿using System;
+using NerdStore.Core.Bus;
 using System.Threading.Tasks;
+using NerdStore.Catalogo.Domain.Events;
 using NerdStore.Catalogo.Domain.Repositories;
 
 namespace NerdStore.Catalogo.Domain.Services
@@ -8,14 +10,16 @@ namespace NerdStore.Catalogo.Domain.Services
     {
         #region Private Read-Only Fields
 
+        private readonly IMediatrHandler _bus;
         private readonly IProdutoRepository _produtoRepository;
 
         #endregion
 
         #region Constructors
 
-        public EstoqueService(IProdutoRepository produtoRepository)
+        public EstoqueService(IMediatrHandler bus, IProdutoRepository produtoRepository)
         {
+            _bus = bus ?? throw new ArgumentNullException(nameof(bus));
             _produtoRepository = produtoRepository ?? throw new ArgumentNullException(nameof(produtoRepository));
         }
 
@@ -31,6 +35,9 @@ namespace NerdStore.Catalogo.Domain.Services
             if (!produto.PossuiEstoque(quantidade)) return false;
 
             produto.DebitarEstoque(quantidade);
+
+            if (produto.QuantidadeEstoque < 10)
+                await _bus.PublicarEvento(new ProdutoAbaixoEstoqueEvent(produto.Id, produto.QuantidadeEstoque));
             
             _produtoRepository.Atualizar(produto);
             return await _produtoRepository.UnitOfWork.Commit();
