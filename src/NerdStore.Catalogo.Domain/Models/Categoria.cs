@@ -16,6 +16,9 @@ namespace NerdStore.Catalogo.Domain.Models
 
         #region Constructors
 
+        protected Categoria()
+        { }
+
         public Categoria(string nome, int codigo)
         {
             Nome = nome;
