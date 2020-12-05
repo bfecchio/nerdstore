@@ -19,6 +19,13 @@ namespace NerdStore.Core.DomainObjects
 
         #endregion
 
+        #region Behaviours
+
+        public virtual bool EhValido()
+            => throw new NotImplementedException();
+
+        #endregion
+
         #region Overriden Methods
 
         public override bool Equals(object obj)
