@@ -1,4 +1,4 @@
-﻿namespace NerdStore.Vendas.Domain
+﻿namespace NerdStore.Vendas.Domain.Enumerations
 {
     public enum TipoDescontoVoucher
     {

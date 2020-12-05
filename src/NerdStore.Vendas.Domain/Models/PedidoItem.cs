@@ -1,7 +1,7 @@
 ﻿using System;
 using NerdStore.Core.DomainObjects;
 
-namespace NerdStore.Vendas.Domain
+namespace NerdStore.Vendas.Domain.Models
 {
     public class PedidoItem : Entity
     {

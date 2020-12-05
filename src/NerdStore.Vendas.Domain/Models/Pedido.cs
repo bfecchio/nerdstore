@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Collections.Generic;
 using NerdStore.Core.DomainObjects;
+using NerdStore.Vendas.Domain.Enumerations;
 
-namespace NerdStore.Vendas.Domain
+namespace NerdStore.Vendas.Domain.Models
 {
     public class Pedido : Entity, IAggregateRoot
     {
