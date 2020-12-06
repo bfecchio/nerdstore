@@ -3,12 +3,12 @@ using NerdStore.Core.Messages;
 
 namespace NerdStore.Core.Bus
 {
-    public interface IMediatrHandler
+    public interface IMediatorHandler
     {
         #region IMediatrHandler Members
 
-        Task PublicarEvento<T>(T evento)
-            where T : Event;
+        Task PublicarEvento<T>(T evento) where T : Event;
+        Task<bool> EnviarComando<T>(T comando) where T : Command;
 
         #endregion
     }

@@ -10,14 +10,14 @@ namespace NerdStore.Catalogo.Domain.Services
     {
         #region Private Read-Only Fields
 
-        private readonly IMediatrHandler _bus;
+        private readonly IMediatorHandler _bus;
         private readonly IProdutoRepository _produtoRepository;
 
         #endregion
 
         #region Constructors
 
-        public EstoqueService(IMediatrHandler bus, IProdutoRepository produtoRepository)
+        public EstoqueService(IMediatorHandler bus, IProdutoRepository produtoRepository)
         {
             _bus = bus ?? throw new ArgumentNullException(nameof(bus));
             _produtoRepository = produtoRepository ?? throw new ArgumentNullException(nameof(produtoRepository));

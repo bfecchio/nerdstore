@@ -5,7 +5,7 @@ using NerdStore.Core.Messages;
 
 namespace NerdStore.Core.Bus
 {
-    public class MediatrHandler : IMediatrHandler
+    public class MediatorHandler : IMediatorHandler
     {
         #region Private Read-Only Fields
 
@@ -15,7 +15,7 @@ namespace NerdStore.Core.Bus
 
         #region Constructors
 
-        public MediatrHandler(IMediator mediator)
+        public MediatorHandler(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
@@ -25,9 +25,10 @@ namespace NerdStore.Core.Bus
         #region IMediatrHandler Members
 
         public async Task PublicarEvento<T>(T evento) where T : Event
-        {
-            await _mediator.Publish(evento);
-        }
+            => await _mediator.Publish(evento);
+
+        public async Task<bool> EnviarComando<T>(T comando) where T : Command
+            => await _mediator.Send(comando);
 
         #endregion
     }
