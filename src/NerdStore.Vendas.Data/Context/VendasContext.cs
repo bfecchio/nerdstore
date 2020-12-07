@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using NerdStore.Core.Bus;
 using NerdStore.Core.Data;
 using System.Threading.Tasks;
 using NerdStore.Core.Messages;
 using Microsoft.EntityFrameworkCore;
 using NerdStore.Vendas.Domain.Models;
+using NerdStore.Core.Communication.Mediator;
 
 namespace NerdStore.Vendas.Data.Context
 {

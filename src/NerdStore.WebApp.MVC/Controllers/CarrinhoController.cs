@@ -1,9 +1,11 @@
 ﻿using System;
-using NerdStore.Core.Bus;
+using MediatR;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using NerdStore.Core.Communication.Mediator;
 using NerdStore.Vendas.Application.Commands;
 using NerdStore.Catalogo.Application.Services;
+using NerdStore.Core.Messages.CommonMessages.Notifications;
 
 namespace NerdStore.WebApp.MVC.Controllers
 {
@@ -18,7 +20,8 @@ namespace NerdStore.WebApp.MVC.Controllers
 
         #region Constructors
 
-        public CarrinhoController(IMediatorHandler mediatorHandler, IProdutoAppService produtoAppService)
+        public CarrinhoController(IMediatorHandler mediatorHandler, INotificationHandler<DomainNotification> notifications, IProdutoAppService produtoAppService)
+            : base(mediatorHandler, notifications)
         {
             _mediatorHandler = mediatorHandler ?? throw new ArgumentNullException(nameof(mediatorHandler));
             _produtoAppService = produtoAppService ?? throw new ArgumentNullException(nameof(produtoAppService));
@@ -28,6 +31,8 @@ namespace NerdStore.WebApp.MVC.Controllers
 
         #region Controller Actions
 
+        [HttpGet]
+        [Route("meu-carrinho")]
         public IActionResult Index()
         {
             return View();
@@ -43,14 +48,19 @@ namespace NerdStore.WebApp.MVC.Controllers
             if (produto.QuantidadeEstoque < quantidade)
             {
                 TempData["Erro"] = "Produto com estoque insuficiente!";
-                return RedirectToAction(nameof(VitrineController.ProdutoDetalhe), nameof(VitrineController), new { id });
+                return RedirectToAction(nameof(VitrineController.ProdutoDetalhe), "Vitrine", new { id });
             }
 
             var command = new AdicionarItemPedidoCommand(ClienteId, produto.Id, produto.Nome, quantidade, produto.Valor);
             await _mediatorHandler.EnviarComando(command);
 
-            TempData["Erro"] = "Produto indisponível!";
-            return RedirectToAction(nameof(VitrineController.ProdutoDetalhe), nameof(VitrineController), new { id });
+            if (OperacaoValida())
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["Erros"] = ObterMensagensErro();
+            return RedirectToAction(nameof(VitrineController.ProdutoDetalhe), "Vitrine", new { id });
         }
 
         #endregion

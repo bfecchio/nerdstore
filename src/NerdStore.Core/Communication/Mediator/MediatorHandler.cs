@@ -2,8 +2,9 @@
 using MediatR;
 using System.Threading.Tasks;
 using NerdStore.Core.Messages;
+using NerdStore.Core.Messages.CommonMessages.Notifications;
 
-namespace NerdStore.Core.Bus
+namespace NerdStore.Core.Communication.Mediator
 {
     public class MediatorHandler : IMediatorHandler
     {
@@ -29,6 +30,9 @@ namespace NerdStore.Core.Bus
 
         public async Task<bool> EnviarComando<T>(T comando) where T : Command
             => await _mediator.Send(comando);
+
+        public async Task PublicarNotificacao<T>(T notificacao) where T : DomainNotification
+            => await _mediator.Publish(notificacao);
 
         #endregion
     }

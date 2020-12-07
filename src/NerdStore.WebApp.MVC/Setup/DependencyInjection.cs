@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-using NerdStore.Core.Bus;
+using NerdStore.Core.Communication.Mediator;
+using NerdStore.Core.Messages.CommonMessages.Notifications;
+
 using NerdStore.Catalog.Data;
 using NerdStore.Catalogo.Domain.Events;
 using NerdStore.Catalogo.Domain.Services;
@@ -21,8 +23,9 @@ namespace NerdStore.WebApp.MVC.Setup
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-            // Domain Bus (Mediator)
+            // Mediator and messages
             services.AddScoped<IMediatorHandler, MediatorHandler>();
+            services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
                        
             // Catalogo
             services.AddScoped<CatalogoContext>();

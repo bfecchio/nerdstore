@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using NerdStore.Core.Messages;
 using NerdStore.Vendas.Domain.Models;
 using NerdStore.Vendas.Domain.Repositories;
+using NerdStore.Core.Communication.Mediator;
+using NerdStore.Core.Messages.CommonMessages.Notifications;
 
 namespace NerdStore.Vendas.Application.Commands.Handlers
 {
@@ -13,14 +15,16 @@ namespace NerdStore.Vendas.Application.Commands.Handlers
     {
         #region Private Read-Only Fields
 
+        private readonly IMediatorHandler _mediatorHandler;
         private readonly IPedidoRepository _pedidoRepository;
 
         #endregion
 
         #region Constructors
 
-        public PedidoCommandHandler(IPedidoRepository pedidoRepository)
+        public PedidoCommandHandler(IMediatorHandler mediatorHandler, IPedidoRepository pedidoRepository)
         {
+            _mediatorHandler = mediatorHandler ?? throw new ArgumentNullException(nameof(mediatorHandler));
             _pedidoRepository = pedidoRepository ?? throw new ArgumentNullException(nameof(pedidoRepository));
         }
 
@@ -66,7 +70,7 @@ namespace NerdStore.Vendas.Application.Commands.Handlers
 
             foreach (var error in message.ValidationResult.Errors)
             {
-                // lançar um evento de erro
+                _mediatorHandler.PublicarNotificacao(new DomainNotification(message.MessageType, error.ErrorMessage));
             }
 
             return false;

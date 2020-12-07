@@ -1,8 +1,8 @@
-﻿using NerdStore.Core.Bus;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using NerdStore.Core.DomainObjects;
 using NerdStore.Vendas.Data.Context;
-using System.Linq;
-using System.Threading.Tasks;
+using NerdStore.Core.Communication.Mediator;
 
 namespace NerdStore.Vendas.Data.Extensions
 {
