@@ -5,27 +5,23 @@ using NerdStore.Vendas.Application.Commands.Validators;
 
 namespace NerdStore.Vendas.Application.Commands
 {
-    public class AdicionarItemPedidoCommand : Command
+    public class AtualizarItemPedidoCommand : Command
     {
         #region Public Properties
 
         public Guid ClienteId { get; private set; }
         public Guid ProdutoId { get; private set; }
-        public string Nome { get; private set; }
         public int Quantidade { get; private set; }
-        public decimal ValorUnitario { get; private set; }
 
         #endregion
 
         #region Constructors
 
-        public AdicionarItemPedidoCommand(Guid clienteId, Guid produtoId, string nome, int quantidade, decimal valorUnitario)
+        public AtualizarItemPedidoCommand(Guid clienteId, Guid produtoId, int quantidade)
         {
             ClienteId = clienteId;
             ProdutoId = produtoId;
-            Nome = nome;
             Quantidade = quantidade;
-            ValorUnitario = valorUnitario;
         }
 
         #endregion
@@ -33,9 +29,8 @@ namespace NerdStore.Vendas.Application.Commands
         #region Overriden Methods
 
         public override bool EhValido()
-        {            
-            ValidationResult = new AdicionarItemPedidoValidator().Validate(this);
-            return ValidationResult.IsValid;
+        {
+            return base.EhValido();
         }
 
         #endregion
