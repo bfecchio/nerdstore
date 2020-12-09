@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
-using NerdStore.Core.Data;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+
+using NerdStore.Core.Data;
+using NerdStore.Core.Messages;
 using NerdStore.Catalogo.Domain.Models;
 
 namespace NerdStore.Catalog.Data
@@ -52,6 +54,7 @@ namespace NerdStore.Catalog.Data
                 property.SetColumnType("varchar(100)");
             }
 
+            modelBuilder.Ignore<Event>();
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CatalogoContext).Assembly);
         }
 

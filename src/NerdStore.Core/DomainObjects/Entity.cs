@@ -1,12 +1,21 @@
 ﻿using System;
+using NerdStore.Core.Messages;
+using System.Collections.Generic;
 
 namespace NerdStore.Core.DomainObjects
 {
     public abstract class Entity
     {
+        #region Private Fields
+
+        private List<Event> _notificacoes;
+
+        #endregion
+
         #region Public Properties
 
         public Guid Id { get; set; }
+        public IReadOnlyCollection<Event> Notificacoes => _notificacoes?.AsReadOnly();
 
         #endregion
 
@@ -23,6 +32,18 @@ namespace NerdStore.Core.DomainObjects
 
         public virtual bool EhValido()
             => throw new NotImplementedException();
+
+        public void AdicionarEvento(Event evento)
+        {
+            _notificacoes = _notificacoes ?? new List<Event>();
+            _notificacoes.Add(evento);
+        }
+
+        public void RemoverEvento(Event evento)
+            => _notificacoes?.Remove(evento);
+
+        public void LimparEventos()
+            => _notificacoes?.Clear();
 
         #endregion
 
