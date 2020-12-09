@@ -5,11 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using NerdStore.Core.Messages;
+using NerdStore.Core.Extensions;
 using NerdStore.Vendas.Domain.Models;
+using NerdStore.Core.DomainObjects.Dtos;
 using NerdStore.Vendas.Application.Events;
 using NerdStore.Vendas.Domain.Repositories;
 using NerdStore.Core.Communication.Mediator;
 using NerdStore.Core.Messages.CommonMessages.Notifications;
+using NerdStore.Core.Messages.CommonMessages.IntegrationEvents;
 
 namespace NerdStore.Vendas.Application.Commands.Handlers
 {
@@ -17,7 +20,8 @@ namespace NerdStore.Vendas.Application.Commands.Handlers
         IRequestHandler<AdicionarItemPedidoCommand, bool>,
         IRequestHandler<AtualizarItemPedidoCommand, bool>,
         IRequestHandler<RemoverItemPedidoCommand, bool>,
-        IRequestHandler<AplicarVoucherPedidoCommand, bool>
+        IRequestHandler<AplicarVoucherPedidoCommand, bool>,
+        IRequestHandler<IniciarPedidoCommand, bool>
     {
         #region Private Read-Only Fields
 
@@ -156,6 +160,31 @@ namespace NerdStore.Vendas.Application.Commands.Handlers
 
             pedido.AdicionarEvento(new PedidoAtualizadoEvent(pedido.ClienteId, pedido.Id, pedido.ValorTotal));
             pedido.AdicionarEvento(new PedidoVoucherAplicadoEvent(pedido.ClienteId, pedido.Id, voucher.Id));
+
+            _pedidoRepository.Atualizar(pedido);
+
+            return await _pedidoRepository.UnitOfWork.Commit();
+        }
+
+        public async Task<bool> Handle(IniciarPedidoCommand message, CancellationToken cancellationToken)
+        {
+            if (!ValidarComando(message)) return false;
+
+            var pedido = await _pedidoRepository.ObterPedidoRascunhoPorClienteId(message.ClienteId);
+            if (pedido == null)
+            {
+                await _mediatorHandler.PublicarNotificacao(new DomainNotification(message.MessageType, "Pedido não encontrado."));
+                return false;
+            }
+
+            pedido.IniciarPedido();
+            
+            var listaProdutosPedido = new ListaProdutosPedido(pedido.Id);
+            pedido.PedidoItens.ForEach(x => listaProdutosPedido.Itens.Add(new Item(x.ProdutoId, x.Quantidade)));
+
+            pedido.AdicionarEvento(new PedidoAtualizadoEvent(pedido.ClienteId, pedido.Id, pedido.ValorTotal));
+            pedido.AdicionarEvento(new PedidoIniciadoEvent(pedido.Id, pedido.ClienteId, pedido.ValorTotal, listaProdutosPedido,
+                message.NomeCartao, message.NumeroCartao, message.ExpiracaoCartao, message.CVVCartao));
 
             _pedidoRepository.Atualizar(pedido);
 

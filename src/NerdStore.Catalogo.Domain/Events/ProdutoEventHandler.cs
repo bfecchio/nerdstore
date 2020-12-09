@@ -2,22 +2,32 @@
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+
+using NerdStore.Catalogo.Domain.Services;
 using NerdStore.Catalogo.Domain.Repositories;
+using NerdStore.Core.Messages.CommonMessages.IntegrationEvents;
+using NerdStore.Core.Communication.Mediator;
 
 namespace NerdStore.Catalogo.Domain.Events
 {
-    public class ProdutoEventHandler : INotificationHandler<ProdutoAbaixoEstoqueEvent>
+    public class ProdutoEventHandler :
+        INotificationHandler<ProdutoAbaixoEstoqueEvent>,
+        INotificationHandler<PedidoIniciadoEvent>
     {
         #region Private Read-Only Fields
-        
+
+        private readonly IEstoqueService _estoqueService;
+        private readonly IMediatorHandler _mediatorHandler;
         private readonly IProdutoRepository _produtoRepository;
 
         #endregion
 
         #region Constructors
 
-        public ProdutoEventHandler(IProdutoRepository produtoRepository)
-        {            
+        public ProdutoEventHandler(IEstoqueService estoqueService, IProdutoRepository produtoRepository, IMediatorHandler mediatorHandler)
+        {
+            _estoqueService = estoqueService ?? throw new ArgumentNullException(nameof(estoqueService));
+            _mediatorHandler = mediatorHandler ?? throw new ArgumentNullException(nameof(mediatorHandler));
             _produtoRepository = produtoRepository ?? throw new ArgumentNullException(nameof(produtoRepository));
         }
 
@@ -31,6 +41,17 @@ namespace NerdStore.Catalogo.Domain.Events
             
             // criar uma solicitação de compra
             // notificar departamento de compras por e-mail
+        }
+
+        public async Task Handle(PedidoIniciadoEvent message, CancellationToken cancellationToken)
+        {
+            var resultado = await _estoqueService.DebitarListaProdutosPedido(message.ProdutosPedido);
+
+            if (resultado)
+                await _mediatorHandler.PublicarEvento(new PedidoEstoqueConfirmadoEvent(message.PedidoId, message.ClienteId, message.Total,
+                    message.ProdutosPedido, message.NomeCartao, message.NumeroCartao, message.ExpiracaoCartao, message.CVVCartao));
+            else
+                await _mediatorHandler.PublicarEvento(new PedidoEstoqueRejeitadoEvent(message.PedidoId, message.ClienteId));
         }
 
         #endregion

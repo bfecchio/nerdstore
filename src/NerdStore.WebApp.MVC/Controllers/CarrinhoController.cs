@@ -8,6 +8,7 @@ using NerdStore.Core.Communication.Mediator;
 using NerdStore.Vendas.Application.Commands;
 using NerdStore.Catalogo.Application.Services;
 using NerdStore.Core.Messages.CommonMessages.Notifications;
+using NerdStore.Vendas.Application.Queries.ViewModels;
 
 namespace NerdStore.WebApp.MVC.Controllers
 {
@@ -119,6 +120,34 @@ namespace NerdStore.WebApp.MVC.Controllers
 
             var carrinho = await _pedidoQueries.ObterCarrinhoCliente(ClienteId);
             return View(nameof(Index), carrinho);
+        }
+
+        [HttpGet]
+        [Route("resuma-da-compra")]
+        public async Task<IActionResult> ResumoDaCompra()
+        {
+            var carrinho = await _pedidoQueries.ObterCarrinhoCliente(ClienteId);
+            return View(carrinho);
+        }
+
+
+        [HttpPost]
+        [Route("iniciar-pedido")]
+        public async Task<IActionResult> IniciarPedido(CarrinhoViewModel carrinhoViewModel)
+        {
+            var carrinho = await _pedidoQueries.ObterCarrinhoCliente(ClienteId);
+
+            var command = new IniciarPedidoCommand(carrinho.PedidoId, ClienteId, carrinho.ValorTotal,
+                carrinhoViewModel.Pagamento.NomeCartao, carrinhoViewModel.Pagamento.NumeroCartao,
+                carrinhoViewModel.Pagamento.ExpiracaoCartao, carrinhoViewModel.Pagamento.CVVCartao
+            );
+            
+            await _mediatorHandler.EnviarComando(command);
+
+            if (OperacaoValida())
+                return RedirectToAction(nameof(Index), "Pedido");
+
+            return View("ResumoDaCompra", await _pedidoQueries.ObterCarrinhoCliente(ClienteId));
         }
 
         #endregion
