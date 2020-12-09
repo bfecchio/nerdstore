@@ -10,16 +10,16 @@ namespace NerdStore.Vendas.Application.Commands
         #region Public Properties
 
         public Guid ClienteId { get; private set; }
-        public string VoucherCodigo { get; private set; }
+        public string CodigoVoucher { get; private set; }
 
         #endregion
 
         #region Constructors
 
-        public AplicarVoucherPedidoCommand(Guid clienteId, string voucherCodigo)
-        {
-            ClienteId = clienteId;
-            VoucherCodigo = voucherCodigo;
+        public AplicarVoucherPedidoCommand(Guid clienteId, string codigoVoucher)
+        {            
+            ClienteId = clienteId;         
+            CodigoVoucher = codigoVoucher;
         }
 
         #endregion
@@ -28,7 +28,8 @@ namespace NerdStore.Vendas.Application.Commands
 
         public override bool EhValido()
         {
-            return base.EhValido();
+            ValidationResult = new AplicarVoucherPedidoValidator().Validate(this);
+            return ValidationResult.IsValid;
         }
 
         #endregion

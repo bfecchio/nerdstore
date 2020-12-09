@@ -9,7 +9,7 @@ namespace NerdStore.Vendas.Application.Commands
     {
         #region Public Properties
 
-        public Guid ClienteId { get; private set; }
+        public Guid ClienteId { get; private set; }        
         public Guid ProdutoId { get; private set; }
 
         #endregion
@@ -17,8 +17,8 @@ namespace NerdStore.Vendas.Application.Commands
         #region Constructors
 
         public RemoverItemPedidoCommand(Guid clienteId, Guid produtoId)
-        {
-            ClienteId = clienteId;
+        {            
+            ClienteId = clienteId;            
             ProdutoId = produtoId;            
         }
 
@@ -28,7 +28,8 @@ namespace NerdStore.Vendas.Application.Commands
 
         public override bool EhValido()
         {
-            return base.EhValido();
+            ValidationResult = new RemoverItemPedidoValidator().Validate(this);
+            return ValidationResult.IsValid;
         }
 
         #endregion

@@ -1,7 +1,10 @@
 ﻿using System;
+using FluentValidation.Results;
 using System.Collections.Generic;
+
 using NerdStore.Core.DomainObjects;
 using NerdStore.Vendas.Domain.Enumerations;
+using NerdStore.Vendas.Domain.Models.Validators;
 
 namespace NerdStore.Vendas.Domain.Models
 {
@@ -32,6 +35,13 @@ namespace NerdStore.Vendas.Domain.Models
 
         protected Voucher()
         { }
+
+        #endregion
+
+        #region Behaviours
+
+        internal ValidationResult ValidarSeAplicavel()
+            => new VoucherAplicavelValidator().Validate(this);
 
         #endregion
     }
