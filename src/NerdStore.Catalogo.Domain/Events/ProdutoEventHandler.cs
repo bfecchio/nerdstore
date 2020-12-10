@@ -4,15 +4,16 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using NerdStore.Catalogo.Domain.Services;
+using NerdStore.Core.Communication.Mediator;
 using NerdStore.Catalogo.Domain.Repositories;
 using NerdStore.Core.Messages.CommonMessages.IntegrationEvents;
-using NerdStore.Core.Communication.Mediator;
 
 namespace NerdStore.Catalogo.Domain.Events
 {
     public class ProdutoEventHandler :
         INotificationHandler<ProdutoAbaixoEstoqueEvent>,
-        INotificationHandler<PedidoIniciadoEvent>
+        INotificationHandler<PedidoIniciadoEvent>,
+        INotificationHandler<PedidoProcessamentoCanceladoEvent>
     {
         #region Private Read-Only Fields
 
@@ -53,6 +54,9 @@ namespace NerdStore.Catalogo.Domain.Events
             else
                 await _mediatorHandler.PublicarEvento(new PedidoEstoqueRejeitadoEvent(message.PedidoId, message.ClienteId));
         }
+
+        public async Task Handle(PedidoProcessamentoCanceladoEvent message, CancellationToken cancellationToken)
+            => await _estoqueService.ReporListaProdutosPedido(message.ProdutosPedido);
 
         #endregion
     }
