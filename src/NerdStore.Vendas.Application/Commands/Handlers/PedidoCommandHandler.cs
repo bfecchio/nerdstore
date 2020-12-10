@@ -206,7 +206,7 @@ namespace NerdStore.Vendas.Application.Commands.Handlers
             }
 
             pedido.FinalizarPedido();
-            pedido.AdicionarEvento(new PedidoFinalizadoEvent(message.PedidoId));
+            pedido.AdicionarEvento(new PedidoFinalizadoEvent(message.PedidoId));            
 
             return await _pedidoRepository.UnitOfWork.Commit();
         }
@@ -225,9 +225,9 @@ namespace NerdStore.Vendas.Application.Commands.Handlers
             var listaProdutosPedido = new ListaProdutosPedido(pedido.Id);
             pedido.PedidoItens.ForEach(x => listaProdutosPedido.Itens.Add(new Item(x.ProdutoId, x.Quantidade)));
             
+            pedido.TornarRascunho();
             pedido.AdicionarEvento(new PedidoProcessamentoCanceladoEvent(pedido.Id, pedido.ClienteId, listaProdutosPedido));
-            pedido.TornarRascunho();            
-
+            
             return await _pedidoRepository.UnitOfWork.Commit();
         }
 
@@ -242,7 +242,7 @@ namespace NerdStore.Vendas.Application.Commands.Handlers
                 return false;
             }
 
-            pedido.TornarRascunho();
+            pedido.TornarRascunho();            
 
             return await _pedidoRepository.UnitOfWork.Commit();
         }

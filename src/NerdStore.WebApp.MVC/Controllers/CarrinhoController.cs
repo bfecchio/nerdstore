@@ -123,7 +123,7 @@ namespace NerdStore.WebApp.MVC.Controllers
         }
 
         [HttpGet]
-        [Route("resuma-da-compra")]
+        [Route("resumo-da-compra")]
         public async Task<IActionResult> ResumoDaCompra()
         {
             var carrinho = await _pedidoQueries.ObterCarrinhoCliente(ClienteId);
