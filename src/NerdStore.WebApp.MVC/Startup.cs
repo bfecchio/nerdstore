@@ -1,16 +1,18 @@
 using MediatR;
 using AutoMapper;
-using NerdStore.Catalog.Data;
-using NerdStore.WebApp.MVC.Data;
-using NerdStore.WebApp.MVC.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using NerdStore.Vendas.Data.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using NerdStore.Catalog.Data;
+using NerdStore.WebApp.MVC.Data;
+using NerdStore.WebApp.MVC.Setup;
+using NerdStore.Vendas.Data.Context;
+using NerdStore.Pagamentos.Data.Context;
 using NerdStore.Catalogo.Application.AutoMapper;
 
 namespace NerdStore.WebApp.MVC
@@ -18,9 +20,7 @@ namespace NerdStore.WebApp.MVC
     public class Startup
     {
         public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+            => Configuration = configuration;
 
         public IConfiguration Configuration { get; }
         
@@ -33,6 +33,9 @@ namespace NerdStore.WebApp.MVC
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDbContext<VendasContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<PagamentoContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
