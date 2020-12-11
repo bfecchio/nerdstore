@@ -16,7 +16,7 @@ namespace EventSourcing
         public EventStoreService(IConfiguration configuration)
         {
             _connection = EventStoreConnection.Create(configuration.GetConnectionString(nameof(EventStoreConnection)));
-            _connection.ConnectAsync();
+            _connection.ConnectAsync();            
         }
 
         #endregion

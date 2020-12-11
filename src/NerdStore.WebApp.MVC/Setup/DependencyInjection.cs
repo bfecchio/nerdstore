@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
+using EventSourcing;
+
+using NerdStore.Core.Data.EventSourcing;
 using NerdStore.Core.Communication.Mediator;
 using NerdStore.Core.Messages.CommonMessages.Notifications;
 using NerdStore.Core.Messages.CommonMessages.IntegrationEvents;
-
-using EventSourcing;
 
 using NerdStore.Catalog.Data;
 using NerdStore.Catalogo.Domain.Events;
@@ -44,7 +45,8 @@ namespace NerdStore.WebApp.MVC.Setup
 
             // Event Sourcing
             services.AddSingleton<IEventStoreService, EventStoreService>();
-                       
+            services.AddSingleton<IEventSourcingRepository, EventSourcingRepository>();
+
             // Catalogo
             services.AddScoped<CatalogoContext>();
             services.AddScoped<IEstoqueService, EstoqueService>();
