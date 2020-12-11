@@ -39,11 +39,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NerdStore.Vendas.Applicatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NerdStore.Vendas.Data", "src\NerdStore.Vendas.Data\NerdStore.Vendas.Data.csproj", "{B8A653CB-5F83-41BA-94EA-F8EC72871A90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NerdStore.Pagamentos.AntiCorruption", "src\NerdStore.Pagamentos.AntiCorruption\NerdStore.Pagamentos.AntiCorruption.csproj", "{5CD7148E-1118-4DFC-8EB2-80715975A56F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NerdStore.Pagamentos.AntiCorruption", "src\NerdStore.Pagamentos.AntiCorruption\NerdStore.Pagamentos.AntiCorruption.csproj", "{5CD7148E-1118-4DFC-8EB2-80715975A56F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NerdStore.Pagamentos.Business", "src\NerdStore.Pagamentos.Business\NerdStore.Pagamentos.Business.csproj", "{05FC73DD-9F69-4CE8-9A13-FAB5C3EFB6DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NerdStore.Pagamentos.Business", "src\NerdStore.Pagamentos.Business\NerdStore.Pagamentos.Business.csproj", "{05FC73DD-9F69-4CE8-9A13-FAB5C3EFB6DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NerdStore.Pagamentos.Data", "src\NerdStore.Pagamentos.Data\NerdStore.Pagamentos.Data.csproj", "{7B886D86-F90A-4A3C-940A-05FEEB526D00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NerdStore.Pagamentos.Data", "src\NerdStore.Pagamentos.Data\NerdStore.Pagamentos.Data.csproj", "{7B886D86-F90A-4A3C-940A-05FEEB526D00}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B8B22910-E09F-45CC-90D8-72C2ADB3EFE7}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yaml = docker-compose.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{6714A3CC-C29F-485B-AC97-EE721A629EB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSourcing", "src\EventSourcing\EventSourcing.csproj", "{68501BF4-5D26-45BB-A056-E14223A2D19A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +108,10 @@ Global
 		{7B886D86-F90A-4A3C-940A-05FEEB526D00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B886D86-F90A-4A3C-940A-05FEEB526D00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B886D86-F90A-4A3C-940A-05FEEB526D00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68501BF4-5D26-45BB-A056-E14223A2D19A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68501BF4-5D26-45BB-A056-E14223A2D19A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68501BF4-5D26-45BB-A056-E14223A2D19A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68501BF4-5D26-45BB-A056-E14223A2D19A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,6 +136,7 @@ Global
 		{5CD7148E-1118-4DFC-8EB2-80715975A56F} = {B141B160-0F12-4712-B60A-19F5277AF713}
 		{05FC73DD-9F69-4CE8-9A13-FAB5C3EFB6DF} = {B141B160-0F12-4712-B60A-19F5277AF713}
 		{7B886D86-F90A-4A3C-940A-05FEEB526D00} = {B141B160-0F12-4712-B60A-19F5277AF713}
+		{68501BF4-5D26-45BB-A056-E14223A2D19A} = {6714A3CC-C29F-485B-AC97-EE721A629EB3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {544206F0-AABE-4D93-9A3D-39598B4FC6D9}

@@ -5,6 +5,8 @@ using NerdStore.Core.Communication.Mediator;
 using NerdStore.Core.Messages.CommonMessages.Notifications;
 using NerdStore.Core.Messages.CommonMessages.IntegrationEvents;
 
+using EventSourcing;
+
 using NerdStore.Catalog.Data;
 using NerdStore.Catalogo.Domain.Events;
 using NerdStore.Catalogo.Domain.Services;
@@ -39,6 +41,9 @@ namespace NerdStore.WebApp.MVC.Setup
             // Mediator and messages
             services.AddScoped<IMediatorHandler, MediatorHandler>();
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
+
+            // Event Sourcing
+            services.AddSingleton<IEventStoreService, EventStoreService>();
                        
             // Catalogo
             services.AddScoped<CatalogoContext>();
